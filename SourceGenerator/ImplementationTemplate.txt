@@ -1,0 +1,30 @@
+﻿namespace {{NameSpace}}
+{
+    partial class {{ClassShortName}} : I{{TypeShortName}}Context
+    {
+        public async Task<IEnumerable<{{TypeName}}>> {{TypeShortName}}GetAll();
+        {
+            return await ListAllEntities<{{TypeName}}>().ConfigureAwait(false);
+        }
+
+        public async Task<{{TypeName}}> {{TypeShortName}}Get({{Params}});
+        {
+            return await GetEntity<{{TypeName}}>({{SelectorExpression}}).ConfigureAwait(false);
+        }
+
+        public async Task<{{TypeName}}> {{TypeShortName}}Update({{TypeName}} {{LowercaseTypeName}});
+        {
+            return await UpdateEntity({{LowercaseTypeName}}).ConfigureAwait(false);
+        }
+
+        public async Task<{{TypeName}}> {{TypeShortName}}Insert({{TypeName}} {{LowercaseTypeName}});
+        {
+            return await InsertEntity({{LowercaseTypeName}}).ConfigureAwait(false);
+        }
+
+        public async Task<{{TypeName}}> {{TypeShortName}}Delete({{Params}});
+        {
+            return await DeleteEntity<{{TypeName}}>({{SelectorExpression}}).ConfigureAwait(false);
+        }
+    }
+}

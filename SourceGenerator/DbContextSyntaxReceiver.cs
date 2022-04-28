@@ -2,7 +2,6 @@
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 
 namespace SourceGenerator
@@ -22,10 +21,7 @@ namespace SourceGenerator
         {
             //has to be a class declaration with at least one base type:
             if (!IsClassDeclarationWithBaseClass(context.Node)) return;
-            //if (!(context.Node is ClassDeclarationSyntax classDeclarationSyntax)
-            //    || classDeclarationSyntax.BaseList == null
-            //    || !classDeclarationSyntax.BaseList.Types.Any())
-            //    return;
+
             var classDeclarationSyntax = context.Node as ClassDeclarationSyntax;
 
             //has to be a partial declaration:
@@ -35,7 +31,7 @@ namespace SourceGenerator
             if (!DerivesFromDbContext(classDeclarationSyntax)) return;
 
             // save the DbContext class:
-            var symbol = ModelExtensions.GetDeclaredSymbol(context.SemanticModel, classDeclarationSyntax) as INamedTypeSymbol; //is there an ISymbol interface more specific to interfaces?
+            var symbol = ModelExtensions.GetDeclaredSymbol(context.SemanticModel, classDeclarationSyntax) as INamedTypeSymbol;
             Classes.Add(symbol);
             
             // Scan OnModelCreating method for key declarations:
@@ -119,6 +115,8 @@ namespace SourceGenerator
 
         private static ExpressionStatementSyntax[] ScanForHasKeyMethodCalls(BlockSyntax onModelCreatingMethodBody)
         {
+            //TODO: make this able to handle arrow notation too. Or maybe it already does, needs testing.
+
             return onModelCreatingMethodBody
                 .Statements
                 .Where(s => s.DescendantNodes().OfType<IdentifierNameSyntax>().Any(n => n.ToString().Equals("HasKey")))

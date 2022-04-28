@@ -5,8 +5,12 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<None Remove="GenericFunctionsTemplate.txt" />
+		<None Remove="ImplementationTemplate.txt" />
 		<None Remove="InterfaceTemplate.txt" />
 		<None Remove="InterfaceTemplate2.txt" />
+		<EmbeddedResource Include="GenericFunctionsTemplate.txt" />
+		<EmbeddedResource Include="ImplementationTemplate.txt" />
 		<EmbeddedResource Include="InterfaceTemplate2.txt" />
 		<EmbeddedResource Include="InterfaceTemplate.txt" />
 	</ItemGroup>

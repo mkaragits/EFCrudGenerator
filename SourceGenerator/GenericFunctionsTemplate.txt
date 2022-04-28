@@ -1,0 +1,50 @@
+﻿using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
+
+namespace {{NameSpace}}
+{
+    partial class {{ClassShortName}}
+    {
+        private async Task<IEnumerable<TEntity>> ListAllEntities<TEntity>() where TEntity : class
+        {
+            return await Set<TEntity>()
+                .AsNoTracking()
+                .ToListAsync()
+                .ConfigureAwait(false);
+        }
+
+        private async Task<TEntity?> GetEntity<TEntity>(Expression<Func<TEntity, bool>> expression) where TEntity : class
+        {
+            var trackedEntity = await Set<TEntity>().SingleOrDefaultAsync(expression).ConfigureAwait(false);
+            if (trackedEntity != null)
+                Entry(trackedEntity).State = EntityState.Detached;
+            return trackedEntity;
+        }
+
+        private async Task<int> UpdateEntity<TEntity>(TEntity entity) where TEntity : class
+        {
+            var trackedEntity = Attach(entity);
+            trackedEntity.State = EntityState.Modified;
+            var result = await SaveChangesAsync().ConfigureAwait(false);
+            trackedEntity.State = EntityState.Detached;
+            return result;
+        }
+
+        private async Task<TEntity> InsertEntity<TEntity>(TEntity entity) where TEntity : class
+        {
+            var trackedEntity = await Set<TEntity>().AddAsync(entity).ConfigureAwait(false);
+            await SaveChangesAsync().ConfigureAwait(false);
+            trackedEntity.State = EntityState.Detached;
+            return entity;
+        }
+
+        private async Task<TEntity?> DeleteEntity<TEntity>(Expression<Func<TEntity, bool>> expression) where TEntity : class
+        {
+            var trackedEntity = await Set<TEntity>().SingleOrDefaultAsync(expression).ConfigureAwait(false);
+            if (trackedEntity == null) return null;
+            Set<TEntity>().Remove(trackedEntity);
+            await SaveChangesAsync().ConfigureAwait(false);
+            return trackedEntity;
+        }
+    }
+}
