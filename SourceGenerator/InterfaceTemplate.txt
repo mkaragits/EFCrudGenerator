@@ -1,0 +1,14 @@
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+
+namespace {{NameSpace}}
+{
+    public interface I{{TypeShortName}}Context
+    {
+        Task<IEnumerable<{{TypeName}}>> {{TypeShortName}}GetAll();
+        Task<{{TypeName}}> {{TypeShortName}}Get({{Params}});
+        Task<{{TypeName}}> {{TypeShortName}}Update({{TypeName}} {{LowercaseTypeName}});
+        Task<{{TypeName}}> {{TypeShortName}}Insert({{TypeName}} {{LowercaseTypeName}});
+        Task<{{TypeName}}> {{TypeShortName}}Delete({{Params}});
+    }
+}

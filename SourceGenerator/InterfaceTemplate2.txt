@@ -1,0 +1,14 @@
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+
+namespace {{NameSpace}}
+{
+    partial interface {{InterfaceName}}
+    {
+        Task<IEnumerable<{{TypeName}}>> ListAll{{TypeNamePlural}}();
+        Task<{{TypeName}}> Get{{TypeShortName}}ById({{IdType}} id);
+        Task<{{TypeName}}> Update{{TypeShortName}}({{TypeName}} {{LowercaseTypeName}});
+        Task<{{TypeName}}> Insert{{TypeShortName}}({{TypeName}} {{LowercaseTypeName}});
+        Task<{{TypeName}}> Delete{{TypeShortName}}({{IdType}} id);
+    }
+}
